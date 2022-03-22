@@ -56,6 +56,8 @@ def remove_patch_og(real_img,mask):
 
 def segmentor(net, img, stride=WINDOW_SIZE[0], batch_size=BATCH_SIZE, window_size=WINDOW_SIZE):
     
+    net.load_state_dict(torch.load('./checkpoints/segnet_final_reference.pth'))
+
     # Switch the network to inference mode
     net.cuda()
     net.eval()
