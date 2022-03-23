@@ -9,11 +9,10 @@ from PIL import Image
 from imageio import imread
 from skimage.feature import canny
 from skimage.color import rgb2gray, gray2rgb
-from .utils import create_mask
+from .utils import create_mask, fill_gaps
 import cv2
-from segmentor import segmentor
-from utils import fill_gaps
-from networks import SegNet
+from .segmentor import segmentor
+from .networks import SegNet
 
 net = SegNet()
 class Dataset(torch.utils.data.Dataset):
