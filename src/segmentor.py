@@ -2,7 +2,7 @@ import numpy as np
 import torch
 from torch.autograd import Variable
 from skimage import io
-from utils import sliding_window, grouper
+from .utils import sliding_window, grouper
 from PIL import Image
 
 WINDOW_SIZE = (256, 256) # Patch size
@@ -31,7 +31,7 @@ def remove_objects(real_img,mask):
     new_img[idx] = 255
     return new_img
 
-def segmentor(net, img, stride=WINDOW_SIZE[0], batch_size=BATCH_SIZE, window_size=WINDOW_SIZE):
+def segmentor(net, image, stride=WINDOW_SIZE[0], batch_size=BATCH_SIZE, window_size=WINDOW_SIZE):
     
     net.load_state_dict(torch.load('./checkpoints/segnet_final_reference.pth'))
 
@@ -39,7 +39,9 @@ def segmentor(net, img, stride=WINDOW_SIZE[0], batch_size=BATCH_SIZE, window_siz
     net.cuda()
     net.eval()
     
+    img = (1 / 255 * np.asarray(image, dtype='float32'))
     pred = np.zeros(img.shape[:2] + (N_CLASSES,))
+    #pred = np.zeros(img.size + (N_CLASSES,))
 
     for i, coords in enumerate(grouper(batch_size, sliding_window(img, step=stride, window_size=window_size))):
                     
@@ -61,6 +63,6 @@ def segmentor(net, img, stride=WINDOW_SIZE[0], batch_size=BATCH_SIZE, window_siz
     
     mask = decode_segmap(np.argmax(pred, axis=-1))
     height, width = mask.shape
-    img = np.array(img.resize((width, height), Image.ANTIALIAS))
+    img = np.array(image.resize((width, height), Image.ANTIALIAS))
     new_img = remove_objects(img, mask)
     return new_img, mask
