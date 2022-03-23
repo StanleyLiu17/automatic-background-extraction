@@ -13,6 +13,9 @@ from .utils import create_mask
 import cv2
 from segmentor import segmentor
 from utils import fill_gaps
+from networks import SegNet
+
+net = SegNet()
 class Dataset(torch.utils.data.Dataset):
     def __init__(self, config, flist, edge_flist, augment=True, training=True):
         super(Dataset, self).__init__()
@@ -66,7 +69,7 @@ class Dataset(torch.utils.data.Dataset):
             img=Image.fromarray(img)
 
         # resize/crop if needed
-        img,mask=segmentor(self.segment_net,img,self.device,self.objects)
+        img,mask=segmentor(net,img)
         img = Image.fromarray(img)
         img = np.array(img.resize((size, size), Image.ANTIALIAS))
 
