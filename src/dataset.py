@@ -78,9 +78,7 @@ class Dataset(torch.utils.data.Dataset):
         mask = np.array(mask.resize((size, size), Image.ANTIALIAS))
         idx=(mask>0)
         mask[idx]=255
-        #kernel = np.ones((5, 5), np.uint8)
-        #opening = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
-        #closing = cv2.morphologyEx(opening, cv2.MORPH_CLOSE, kernel)
+        
         mask=np.apply_along_axis(fill_gaps, 1, mask) #horizontal padding
         mask=np.apply_along_axis(fill_gaps, 0, mask) #vertical padding
         
