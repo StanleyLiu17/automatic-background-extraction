@@ -11,9 +11,8 @@ from skimage.feature import canny
 from skimage.color import rgb2gray, gray2rgb
 from .utils import create_mask
 import cv2
-from .segmentor_fcn import segmentor,fill_gaps
-
-
+from segmentor import segmentor
+from utils import fill_gaps
 class Dataset(torch.utils.data.Dataset):
     def __init__(self, config, flist, edge_flist, augment=True, training=True):
         super(Dataset, self).__init__()
@@ -32,7 +31,6 @@ class Dataset(torch.utils.data.Dataset):
         self.segment_net = config.SEG_NETWORK
         # in test mode, there's a one-to-one relationship between mask and image
         # masks are loaded non random
-        
 
     def __len__(self):
         return len(self.data)
@@ -55,17 +53,12 @@ class Dataset(torch.utils.data.Dataset):
         width,height=img.size
         return width,height
 
-
     def load_item(self, index):
 
         size = self.input_size
 
         # load image
         img = Image.open(self.data[index])
-        
-        
-
-        
         
         # gray to rgb
         if img.mode !='RGB':
@@ -77,13 +70,9 @@ class Dataset(torch.utils.data.Dataset):
         img = Image.fromarray(img)
         img = np.array(img.resize((size, size), Image.ANTIALIAS))
 
-
         # create grayscale image
         img_gray = rgb2gray(np.array(img))
         
-        
-        
-
         # load mask
         mask = Image.fromarray(mask)
         mask = np.array(mask.resize((size, size), Image.ANTIALIAS))
@@ -95,9 +84,6 @@ class Dataset(torch.utils.data.Dataset):
         mask=np.apply_along_axis(fill_gaps, 1, mask) #horizontal padding
         mask=np.apply_along_axis(fill_gaps, 0, mask) #vertical padding
         
-
-
-
         # load edge
         edge = self.load_edge(img_gray, index, mask)
 
@@ -141,12 +127,10 @@ class Dataset(torch.utils.data.Dataset):
 
             return edge
 
-    
     def to_tensor(self, img):
         img = Image.fromarray(img)
         img_t = F.to_tensor(img).float()
         return img_t
-
 
     def load_flist(self, flist):
         if isinstance(flist, list):

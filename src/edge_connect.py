@@ -1,10 +1,7 @@
 '''
         Code of EdgeConnect is from this repo
         https://github.com/knazeri/edge-connect
-        '''
-
-
-
+'''
 import os
 import numpy as np
 import torch
@@ -69,7 +66,6 @@ class EdgeConnect():
         else:
             self.edge_model.save()
             self.inpaint_model.save()
-
 
     def test(self):
         self.edge_model.eval()

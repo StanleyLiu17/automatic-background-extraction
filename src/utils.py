@@ -285,3 +285,24 @@ def grouper(n, iterable):
             return
         yield chunk
 
+def fill_gaps(values):
+    searchval=[255,0,255]
+    searchval2=[255,0,0,255]
+    idx=(np.array(np.where((values[:-2]==searchval[0]) & (values[1:-1]==searchval[1]) & (values[2:]==searchval[2])))+1)
+    idx2=(np.array(np.where((values[:-3]==searchval2[0]) & (values[1:-2]==searchval2[1]) & (values[2:-1]==searchval2[2]) & (values[3:]==searchval2[3])))+1)
+    idx3=(idx2+1)
+    new=idx.tolist()+idx2.tolist()+idx3.tolist()
+    newlist = [item for items in new for item in items]
+    values[newlist]=255
+    return values
+
+def fill_gaps2(values):
+    searchval=[0,255]
+    searchval2=[255,0]
+    idx=(np.array(np.where((values[:-1]==searchval[0]) & (values[1:]==searchval[1]))))
+    idx2=(np.array(np.where((values[:-1]==searchval[0]) & (values[1:]==searchval[1])))+1)
+    
+    new=idx.tolist()+idx2.tolist()
+    newlist = [item for items in new for item in items]
+    values[newlist]=255
+    return values
