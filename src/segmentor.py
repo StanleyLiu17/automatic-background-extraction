@@ -2,11 +2,9 @@ import numpy as np
 import torch
 from torch.autograd import Variable
 from skimage import io
-from networks import SegNet
 from utils import sliding_window, grouper
 from PIL import Image
 
-net = SegNet()
 WINDOW_SIZE = (256, 256) # Patch size
 BATCH_SIZE = 10 # Number of samples in a mini-batch
 N_CLASSES = 6
