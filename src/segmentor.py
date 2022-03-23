@@ -41,7 +41,6 @@ def segmentor(net, image, stride=WINDOW_SIZE[0], batch_size=BATCH_SIZE, window_s
     
     img = (1 / 255 * np.asarray(image, dtype='float32'))
     pred = np.zeros(img.shape[:2] + (N_CLASSES,))
-    #pred = np.zeros(img.size + (N_CLASSES,))
 
     for i, coords in enumerate(grouper(batch_size, sliding_window(img, step=stride, window_size=window_size))):
                     
