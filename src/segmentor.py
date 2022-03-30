@@ -6,10 +6,6 @@ from .utils import sliding_window, grouper
 from PIL import Image
 from collections import namedtuple
 
-WINDOW_SIZE = (256, 256) # Patch size
-BATCH_SIZE = 10 # Number of samples in a mini-batch
-N_CLASSES = 6
-
 Label = namedtuple('Label' , ['name', 'id', 'trainId', 'category', 'categoryId', 'hasInstances', 'ignoreInEval', 'color', 'm_color',])
 labels = [
     #       name                     id    trainId   category            catId     hasInstances   ignoreInEval   color          multiplied color
@@ -32,6 +28,10 @@ labels = [
 ]
 palette = {label.name : label.color for label in labels}
 invert_palette = {v: k for k, v in palette.items()}
+
+WINDOW_SIZE = (256, 256) # Patch size
+BATCH_SIZE = 10 # Number of samples in a mini-batch
+N_CLASSES = len(palette.keys())
 
 def decode_segmap(image):
                 
