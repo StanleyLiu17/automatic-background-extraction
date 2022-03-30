@@ -13,8 +13,6 @@ from .utils import create_mask, fill_gaps
 import cv2
 from .segmentor import segmentor
 from .networks import SegNet
-
-net = SegNet()
 class Dataset(torch.utils.data.Dataset):
     def __init__(self, config, flist, edge_flist, augment=True, training=True):
         super(Dataset, self).__init__()
@@ -28,12 +26,14 @@ class Dataset(torch.utils.data.Dataset):
         self.edge = config.EDGE
         self.mask = config.MASK
         self.nms = config.NMS
+        
+        self.segment_net = SegNet()
         self.device = config.SEG_DEVICE
-        self.objects = config.OBJECTS
-        self.segment_net = config.SEG_NETWORK
-        # in test mode, there's a one-to-one relationship between mask and image
-        # masks are loaded non random
-
+        
+        self.segment_net.load_state_dict(torch.load('./checkpoints/segnet_final_reference.pth'))
+        self.segment_net.to(self.device)
+        self.segment_net.eval()
+        
     def __len__(self):
         return len(self.data)
 
@@ -65,10 +65,10 @@ class Dataset(torch.utils.data.Dataset):
         # gray to rgb
         if img.mode !='RGB':
             img = gray2rgb(np.array(img))
-            img=Image.fromarray(img)
+            img = Image.fromarray(img)
 
-        # resize/crop if needed
-        img,mask=segmentor(net,img)
+        # Resize/crop if needed
+        img, mask = segmentor(self.segment_net, img)
         img = Image.fromarray(img)
         img = np.array(img.resize((size, size), Image.ANTIALIAS))
 
