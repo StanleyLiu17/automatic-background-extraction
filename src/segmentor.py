@@ -4,19 +4,35 @@ from torch.autograd import Variable
 from skimage import io
 from .utils import sliding_window, grouper
 from PIL import Image
+from collections import namedtuple
 
 WINDOW_SIZE = (256, 256) # Patch size
 BATCH_SIZE = 10 # Number of samples in a mini-batch
 N_CLASSES = 6
 
-palette = {0 : (255, 255, 255), # Impervious surfaces (white)
-           1 : (0, 0, 255),     # Buildings (blue)
-           2 : (0, 255, 255),   # Low vegetation (cyan)
-           3 : (0, 255, 0),     # Trees (green)
-           4 : (255, 255, 0),   # Cars (yellow)
-           5 : (255, 0, 0),     # Clutter (red)
-           6 : (0, 0, 0)}       # Undefined (black)
-           
+Label = namedtuple('Label' , ['name', 'id', 'trainId', 'category', 'categoryId', 'hasInstances', 'ignoreInEval', 'color', 'm_color',])
+labels = [
+    #       name                     id    trainId   category            catId     hasInstances   ignoreInEval   color          multiplied color
+    Label(  'unlabeled'            ,  0 ,      255 , 'void'            , 0       , False        , True         , (  0,  0,  0) , 0      ),
+    Label(  'ship'                 ,  1 ,        0 , 'transport'       , 1       , True         , False        , (  0,  0, 63) , 4128768),
+    Label(  'storage_tank'         ,  2 ,        1 , 'transport'       , 1       , True         , False        , (  0, 63, 63) , 4144896),
+    Label(  'baseball_diamond'     ,  3 ,        2 , 'land'            , 2       , True         , False        , (  0, 63,  0) , 16128  ),
+    Label(  'tennis_court'         ,  4 ,        3 , 'land'            , 2       , True         , False        , (  0, 63,127) , 8339200),
+    Label(  'basketball_court'     ,  5 ,        4 , 'land'            , 2       , True         , False        , (  0, 63,191) , 12533504),
+    Label(  'Ground_Track_Field'   ,  6 ,        5 , 'land'            , 2       , True         , False        , (  0, 63,255) , 16727808),
+    Label(  'Bridge'               ,  7 ,        6 , 'land'            , 2       , True         , False        , (  0,127, 63) , 4161280),
+    Label(  'Large_Vehicle'        ,  8 ,        7 , 'transport'       , 1       , True         , False        , (  0,127,127) , 8355584),
+    Label(  'Small_Vehicle'        ,  9 ,        8 , 'transport'       , 1       , True         , False        , (  0,  0,127) , 8323072),
+    Label(  'Helicopter'           , 10 ,        9 , 'transport'       , 1       , True         , False        , (  0,  0,191) , 12517376),
+    Label(  'Swimming_pool'        , 11 ,       10 , 'land'            , 2       , True         , False        , (  0,  0,255) , 16711680),
+    Label(  'Roundabout'           , 12 ,       11 , 'land'            , 2       , True         , False        , (  0,191,127) , 8371968),
+    Label(  'Soccer_ball_field'    , 13 ,       12 , 'land'            , 2       , True         , False        , (  0,127,191) , 12549888),
+    Label(  'plane'                , 14 ,       13 , 'transport'       , 1       , True         , False        , (  0,127,255) , 16744192),
+    Label(  'Harbor'               , 15 ,       14 , 'transport'       , 1       , True         , False        , (  0,100,155) , 10183680),
+]
+palette = {label.name : label.color for label in labels}
+invert_palette = {v: k for k, v in palette.items()}
+
 def decode_segmap(image):
                 
     r = np.zeros_like(image).astype(np.uint8)
