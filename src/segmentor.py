@@ -37,7 +37,9 @@ def decode_segmap(image):
                 
     r = np.zeros_like(image).astype(np.uint8)
     for c, i in palette.items():
-        idx = image == 4
+        idx = image == 8
+        r[idx] = 255
+        idx = image == 9
         r[idx] = 255
     return np.array(r)
 
