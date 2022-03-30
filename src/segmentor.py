@@ -33,12 +33,6 @@ def remove_objects(real_img,mask):
 
 def segmentor(net, image, stride=WINDOW_SIZE[0], batch_size=BATCH_SIZE, window_size=WINDOW_SIZE):
     
-    net.load_state_dict(torch.load('./checkpoints/segnet_final_reference.pth'))
-
-    # Switch the network to inference mode
-    net.cuda()
-    net.eval()
-    
     img = (1 / 255 * np.asarray(image, dtype='float32'))
     pred = np.zeros(img.shape[:2] + (N_CLASSES,))
 
