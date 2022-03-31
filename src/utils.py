@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
 import torch
+import torch.nn as nn
 import torch.nn.functional as F
 import itertools
 
@@ -305,3 +306,16 @@ def fill_gaps2(values):
     newlist = [item for items in new for item in items]
     values[newlist]=255
     return values
+
+def output_align(input, output):
+    """
+    In testing, sometimes output is several pixels less than irregular-size input,
+    here is to fill them
+    """
+    if output.size() != input.size():
+        diff_width = input.size(-1) - output.size(-1)
+        diff_height = input.size(-2) - output.size(-2)
+        m = nn.ReplicationPad2d((0, diff_width, 0, diff_height))
+        output = m(output)
+
+    return output
