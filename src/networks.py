@@ -195,7 +195,7 @@ class ResnetBlock(nn.Module):
 
         return out
 
-LABELS = ["roads", "buildings", "low veg.", "trees", "cars", "clutter"] # Label names
+LABELS = ['unlabeled', 'ship', 'storage_tank', 'baseball_diamond', 'tennis_court', 'basketball_court', 'Ground_Track_Field', 'Bridge', 'Large_Vehicle', 'Small_Vehicle', 'Helicopter', 'Swimming_pool', 'Roundabout', 'Soccer_ball_field', 'plane', 'Harbor']
 class SegNet(nn.Module):
     # SegNet network
     @staticmethod
