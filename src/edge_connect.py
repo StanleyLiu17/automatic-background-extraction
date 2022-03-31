@@ -8,7 +8,7 @@ import torch
 from torch.utils.data import DataLoader
 from .dataset import Dataset
 from .models import EdgeModel, InpaintingModel
-from .utils import Progbar, create_dir, stitch_images, imsave
+from .utils import Progbar, create_dir, stitch_images, imsave, output_align
 from PIL import Image
 from torchvision import transforms
 
@@ -89,17 +89,20 @@ class EdgeConnect():
             # edge model
             if model == 1:
                 outputs = self.edge_model(images_gray, edges, masks)
+                outputs = output_align(images, outputs)
                 outputs_merged = (outputs * masks) + (edges * (1 - masks))
 
             # inpaint model
             elif model == 2:
                 outputs = self.inpaint_model(images, edges, masks)
+                outputs = output_align(images, outputs)
                 outputs_merged = (outputs * masks) + (images * (1 - masks))
 
             # inpaint with edge model / joint model
             else:
                 edges = self.edge_model(images_gray, edges, masks).detach()
                 outputs = self.inpaint_model(images, edges, masks)
+                outputs = output_align(images, outputs)
                 outputs_merged = (outputs * masks) + (images * (1 - masks))
 
             output = self.postprocess(outputs_merged)[0]            
