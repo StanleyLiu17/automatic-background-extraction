@@ -62,8 +62,6 @@ def load_config(mode=None):
     # create checkpoints path if does't exist
     if not os.path.exists(args.path):
         os.makedirs(args.path)
-    #if not os.path.exists(config_path):
-    #    copyfile('./config.yml.example', config_path)
 
     # load config file
     config = Config(config_path)
