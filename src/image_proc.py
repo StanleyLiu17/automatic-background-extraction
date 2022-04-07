@@ -5,7 +5,8 @@ from sklearn.feature_extraction.image import extract_patches_2d, reconstruct_fro
 from skimage import io
 from empatches import EMPatches
 from ast import literal_eval
-
+from functools import cmp_to_key
+import re
 def pad_n_slice(image):
     arr = np.asarray(image)
 
@@ -28,10 +29,10 @@ def slice_img(img):
 def stitch_patches(patch_dir, out_dir):
     
     emp = EMPatches()
-    patches = [io.imread(os.path.join(patch_dir, patch)) for patch in os.listdir(patch_dir)]
-   
-    with open('patches_array.txt', 'w') as f:
-        f.write(str(patches))
+    patches = [io.imread(patch) for patch in sorted(
+                            [os.path.join(patch_dir, patch) for patch in os.listdir(patch_dir)], 
+                                key=cmp_to_key(lambda file1, file2: int(re.search(r'\d+', file1).group())
+                                                - int(re.search(r'\d+', file2).group())))]
     
     with open('indices.txt') as f:
         indices = literal_eval(f.readlines()[0])
