@@ -140,6 +140,13 @@ class Dataset(torch.utils.data.Dataset):
             if os.path.isdir(flist):
                 flist = list(glob.glob(flist + '/*.jpg')) + list(glob.glob(flist + '/*.png'))
                 flist.sort()
+
+                if not os.path.exists('./Patches/'):
+                    os.makedirs('./Patches/')
+
+                for i, file in enumerate(flist):
+                    print()
+
                 return flist
 
             if os.path.isfile(flist):
