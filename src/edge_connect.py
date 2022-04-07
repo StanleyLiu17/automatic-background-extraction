@@ -102,7 +102,7 @@ class EdgeConnect():
             else:
                 edges = self.edge_model(images_gray, edges, masks).detach()
                 outputs = self.inpaint_model(images, edges, masks)
-                outputs = output_align(images, outputs)
+                #outputs = output_align(images, outputs)
                 outputs_merged = (outputs * masks) + (images * (1 - masks))
 
             output = self.postprocess(outputs_merged)[0]            
