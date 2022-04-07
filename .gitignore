@@ -15,3 +15,5 @@ Tests/top_mosaic_09cm_area5.png
 requirements.txt
 Patches/
 patches.txt
+indices.txt
+patches_array.txt
