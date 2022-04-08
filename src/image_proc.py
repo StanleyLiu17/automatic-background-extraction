@@ -43,7 +43,7 @@ def slice_img_dir(image_paths):
         Str: String representing relative path of directory where patches are saved
     """
     with open('indices.txt', 'a+') as f:
-        for i, image_path in enumerate(len(image_paths)):
+        for i, image_path in enumerate(image_paths):
             
             image = io.imread(image_path)    
             patches, indices = emp.extract_patches(image, patchsize=256, overlap=0.1)
