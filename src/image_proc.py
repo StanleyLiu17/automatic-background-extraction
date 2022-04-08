@@ -1,5 +1,6 @@
 from PIL import Image, ImageChops
 import os, re
+from requests import patch
 from skimage import io
 from empatches import EMPatches
 from ast import literal_eval
@@ -49,8 +50,8 @@ def slice_img_dir(image_paths):
             patches, indices = emp.extract_patches(image, patchsize=256, overlap=0.2)
             f.write(str(indices))
             
-            for j in range(len(patches)):
-                im = Image.fromarray(patches[i])
+            for j, patch in enumerate(patches):
+                im = Image.fromarray(patch)
                 im.save(f"./Patches/{i}_{j}_{os.path.basename(image_path)}")
 
     return './Patches'
