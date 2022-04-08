@@ -1,13 +1,13 @@
 import os
+from bleach import clean
 import cv2
 import random
 import numpy as np
 import torch
 import argparse
-from shutil import copyfile
 from src.config import Config
 from src.edge_connect import EdgeConnect
-
+from src.image_proc import stitch_patches_dir, cleanup
 def main(mode=None):
     r"""starts the model"""
     config = load_config(mode)
@@ -39,6 +39,12 @@ def main(mode=None):
     print('\nstart testing...\n')
     model.test()
 
+    results_path = os.path.join(config.PATH, 'results')
+    if config.RESULTS is not None:
+        results_path = os.path.join(config.RESULTS)
+    stitch_patches_dir(results_path)
+    cleanup()
+    
 def load_config(mode=None):
     r"""loads model config
 
