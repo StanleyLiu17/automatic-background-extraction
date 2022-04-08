@@ -12,6 +12,7 @@ from skimage.color import rgb2gray, gray2rgb
 from .utils import create_mask, fill_gaps
 from .segmentor import segmentor
 from .networks import SegNet
+from .image_proc import slice_img_dir
 class Dataset(torch.utils.data.Dataset):
     def __init__(self, config, flist, edge_flist, augment=True, training=True):
         super(Dataset, self).__init__()
@@ -138,15 +139,15 @@ class Dataset(torch.utils.data.Dataset):
         # flist: image file path, image directory path, text file flist path
         if isinstance(flist, str):
             if os.path.isdir(flist):
+                
                 flist = list(glob.glob(flist + '/*.jpg')) + list(glob.glob(flist + '/*.png'))
                 flist.sort()
 
                 if not os.path.exists('./Patches/'):
                     os.makedirs('./Patches/')
-
-                for i, file in enumerate(flist):
-                    print()
-
+                    os.makedirs('./Patches/results')
+                    
+                flist = slice_img_dir(flist)
                 return flist
 
             if os.path.isfile(flist):
