@@ -41,7 +41,7 @@ def slice_img_dir(image_paths):
             for j in range(len(patches)):
                 im = Image.fromarray(patches[i])
                 im.save(f"./Patches/{i}_{j}_{os.path.basename(image_path)}")
-                
+
 def stitch_patches_dir(out_dir):
     
     all_patch_paths = natsorted(os.path.join('./Patches', patch) for patch in os.listdir('./Patches'))
@@ -49,7 +49,7 @@ def stitch_patches_dir(out_dir):
     for i, patch_path in enumerate(len(all_patch_paths)):
         patch_counter = 0
         
-        while re.search(r'\d+', os.path.basename(patch_path)).group() == i:
+        while int(re.search(r'\d+', os.path.basename(patch_path)).group()) == i:
             patch_counter += 1
         
         patch_paths = all_patch_paths[0:patch_counter + 1] # Get patche paths belonging to one image
