@@ -10,13 +10,13 @@ emp = EMPatches()
 def slice_img(img, i):
     
     image = io.imread(img)
-    patches, indices = emp.extract_patches(image, patchsize=256, overlap=0.1)
-
+    patches, indices = emp.extract_patches(image, patchsize=256, overlap=0.2)
+    
     with open('indices.txt', 'a+') as f:
         f.write(str(indices))
     
-    for j in range(len(patches)):
-        im = Image.fromarray(patches[i])
+    for j, patch in enumerate(patches):
+        im = Image.fromarray(patch)
         im.save(f"./Patches/{i}_{j}_{os.path.basename(img)}")
             
 def stitch_patches(patch_dir, out_dir, i):
@@ -45,8 +45,8 @@ def slice_img_dir(image_paths):
     with open('indices.txt', 'a+') as f:
         for i, image_path in enumerate(image_paths):
             
-            image = io.imread(image_path)    
-            patches, indices = emp.extract_patches(image, patchsize=256, overlap=0.1)
+            image = io.imread(os.path.join('./Tests/', image_path))
+            patches, indices = emp.extract_patches(image, patchsize=256, overlap=0.2)
             f.write(str(indices))
             
             for j in range(len(patches)):
@@ -97,3 +97,8 @@ def trim(im):
     bbox = diff.getbbox()
     if bbox:
         return im.crop(bbox)
+
+#if __name__ == "__main__":
+    #slice_img_dir(os.listdir('./Tests/'))
+    #slice_img('./Tests/P0114.png',0)
+    #slice_img('top_mosaic_09cm_area5.png', 0)
