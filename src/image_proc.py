@@ -1,23 +1,18 @@
 import numpy as np
 from PIL import Image, ImageChops
-import image_slicer, os, shutil, sklearn
-from sklearn.feature_extraction.image import extract_patches_2d, reconstruct_from_patches_2d
+import os
 from skimage import io
 from empatches import EMPatches
 from ast import literal_eval
 from functools import cmp_to_key
 import re
-def pad_n_slice(image):
-    arr = np.asarray(image)
+from natsort import natsorted
 
 def slice_img(img):
     
     image = io.imread(img)
     emp = EMPatches()
     patches, indices = emp.extract_patches(image, patchsize=256, overlap=0.1)
-    
-    with open('patches.txt', 'w') as f:
-        f.write(str(patches))
 
     with open('indices.txt', 'w') as f:
         f.write(str(indices))
@@ -29,10 +24,7 @@ def slice_img(img):
 def stitch_patches(patch_dir, out_dir):
     
     emp = EMPatches()
-    patches = [io.imread(patch) for patch in sorted(
-                            [os.path.join(patch_dir, patch) for patch in os.listdir(patch_dir)], 
-                                key=cmp_to_key(lambda file1, file2: int(re.search(r'\d+', file1).group())
-                                                - int(re.search(r'\d+', file2).group())))]
+    patches = [io.imread(patch) for patch in natsorted([os.path.join(patch_dir, patch) for patch in os.listdir(patch_dir)])]
     
     with open('indices.txt') as f:
         indices = literal_eval(f.readlines()[0])
@@ -50,5 +42,6 @@ def trim(im):
         return im.crop(bbox)
 
 if __name__ == "__main__":
-    slice_img('Tests/top_mosaic_09cm_area5.png')
-    stitch_patches('./Patches', '.')
+    #slice_img('Tests/top_mosaic_09cm_area5.png')
+    #stitch_patches('./Patches', '.')
+    stitch_patches('A:/Spring 2022/CSE 598/Background Removal/DeepNetsForEO-master/Patches', '.')
