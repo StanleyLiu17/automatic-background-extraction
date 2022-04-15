@@ -26,7 +26,7 @@ labels = [
     Label(  'plane'                , 14 ,       13 , 'transport'       , 1       , True         , False        , (  0,127,255) , 16744192),
     Label(  'Harbor'               , 15 ,       14 , 'transport'       , 1       , True         , False        , (  0,100,155) , 10183680),
 ]
-palette = {label.name : label.color for label in labels}
+palette = {label.id : label.color for label in labels}
 invert_palette = {v: k for k, v in palette.items()}
 
 WINDOW_SIZE = (256, 256) # Patch size
