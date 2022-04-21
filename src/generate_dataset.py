@@ -8,6 +8,7 @@ from empatches import EMPatches
 import glob
 from random import randrange
 import PIL.ImageOps
+import splitfolders
 
 Label = namedtuple('Label' , ['name', 'id', 'trainId', 'category', 'categoryId', 'hasInstances', 'ignoreInEval', 'color', 'm_color',])
 labels = [
@@ -40,8 +41,9 @@ INPAINTING_DATASET = 'A:/Downloads/Datasets/iSAID/train/Inpainting Dataset'
 SEMANTIC_MASKS = 'A:/Downloads/Datasets/iSAID/train/Semantic_masks/images'
 INPAINTING_OUT = 'A:/Downloads/Datasets/iSAID/train/Augmented Inpainting Dataset'
 MASKS_OUT = 'A:/Downloads/Datasets/iSAID/train/Masks'
-IRREGULAR_MASKS = 'A:/Downloads/Datasets/qd_imd/train'
-IRREGULAR_MASKS_OUT_DIR = 'A:/Downloads/Datasets/qd_imd/train_resize'
+IRREGULAR_MASKS_TRAIN = 'A:/Downloads/Datasets/qd_imd/train'
+IRREGULAR_MASKS_VAL = 'A:/Downloads/Datasets/qd_imd/val'
+IRREGULAR_MASKS_TEST = 'A:/Downloads/Datasets/qd_imd/test'
 
 def decode_segmap(image, random=0):
     """Generates numpy array where 1's corresponding to objects of interest as shown in the Label object
@@ -165,12 +167,6 @@ def remove_vehicles(dataset, masks, out_dir):
         im = Image.fromarray(new_img)
         im.save(f"{out_dir}/{os.path.basename(image_paths[i])}")
 
-def generate_dataset():
-    remove_vehicles(OG_DATASET, SEMANTIC_MASKS)
-    augment_dataset(INPAINTING_DATASET, INPAINTING_OUT)
-    rename(INPAINTING_DATASET, '_cleanup')
-    generate_masks(INPAINTING_DATASET, SEMANTIC_MASKS, MASKS_OUT)
-
 def invert_masks(mask_path):
     """Inverts binary masks in directory
 
@@ -199,6 +195,20 @@ def resize(mask_path, out_dir, size=(256,256)):
         im = im.convert('1')
         im.save(f"{out_dir}/{os.path.basename(mask)}", format='PNG')
 
+def generate_splits(dataset_path, out_dir, p_seed, p_ratio):
+    splitfolders.ratio(dataset_path, output=out_dir, seed=p_seed, ratio=p_ratio)
+
+def augment_masks(mask_path):
+    resize(mask_path, mask_path)
+    invert_masks(mask_path)
+
+def generate_dataset():
+    remove_vehicles(OG_DATASET, SEMANTIC_MASKS)
+    augment_dataset(INPAINTING_DATASET, INPAINTING_OUT)
+    rename(INPAINTING_DATASET, '_cleanup')
+    augment_masks(IRREGULAR_MASKS_TRAIN)
+    augment_masks(IRREGULAR_MASKS_VAL)
+    augment_masks(IRREGULAR_MASKS_TEST)
+
 if __name__ == "__main__":
-    #generate_dataset()
-    resize(IRREGULAR_MASKS, IRREGULAR_MASKS_OUT_DIR)
+    generate_dataset()
