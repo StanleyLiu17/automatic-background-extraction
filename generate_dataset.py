@@ -6,6 +6,8 @@ from skimage import io
 from PIL import Image
 from empatches import EMPatches
 import glob
+from random import randrange
+import PIL.ImageOps
 
 Label = namedtuple('Label' , ['name', 'id', 'trainId', 'category', 'categoryId', 'hasInstances', 'ignoreInEval', 'color', 'm_color',])
 labels = [
@@ -30,14 +32,18 @@ labels = [
 palette = {label.id : label.color for label in labels}
 invert_palette = {v: k for k, v in palette.items()}
 emp = EMPatches()
+RAND_RANGE = 6
+SEGMAP_RAND_MAP = {0: 1, 1: 2, 3: 8, 4: 9, 5: 10, 6: 14}
 
 OG_DATASET = 'A:/Downloads/Datasets/iSAID/train/RGB Images'
 INPAINTING_DATASET = 'A:/Downloads/Datasets/iSAID/train/Inpainting Dataset'
 SEMANTIC_MASKS = 'A:/Downloads/Datasets/iSAID/train/Semantic_masks/images'
 INPAINTING_OUT = 'A:/Downloads/Datasets/iSAID/train/Augmented Inpainting Dataset'
 MASKS_OUT = 'A:/Downloads/Datasets/iSAID/train/Masks'
+IRREGULAR_MASKS = 'A:/Downloads/Datasets/qd_imd/train'
+IRREGULAR_MASKS_OUT_DIR = 'A:/Downloads/Datasets/qd_imd/train_resize'
 
-def decode_segmap(image):
+def decode_segmap(image, random=0):
     """Generates numpy array where 1's corresponding to objects of interest as shown in the Label object
        and 0's are everything else
 
@@ -49,10 +55,14 @@ def decode_segmap(image):
     """
     r = np.zeros_like(image).astype(np.uint8)
     for c, i in palette.items():
-        idx = image == 8
-        r[idx] = 255
-        idx = image == 9
-        r[idx] = 255
+        if random:
+            num_mask_objects = randrange(2, RAND_RANGE) # Get random number of objects to mask
+            objects = []
+        else: # Non random masks, remove vehicles
+            idx = image == 8
+            r[idx] = 255
+            idx = image == 9
+            r[idx] = 255
     return np.array(r)
 
 def remove_objects(real_img,mask):
@@ -161,5 +171,34 @@ def generate_dataset():
     rename(INPAINTING_DATASET, '_cleanup')
     generate_masks(INPAINTING_DATASET, SEMANTIC_MASKS, MASKS_OUT)
 
+def invert_masks(mask_path):
+    """Inverts binary masks in directory
+
+    Args:
+        mask_path (str): Path to folder containing mask images
+    """
+    masks =  glob.glob(f"{mask_path}/*.png")
+    for mask in masks:
+        image = np.asarray(Image.open(mask).convert('1'))
+        invert_image = np.invert(image)
+        im = Image.fromarray(invert_image)
+        im.save(mask, format='PNG')
+
+def resize(mask_path, out_dir, size=(256,256)):
+    """Resizes images to given size. Preserves aspect ratio.
+
+    Args:
+        mask_path (str): Path to images to resize
+        out_dir (str): Path to save images
+        size (tuple, optional): Size to resize imags to. Defaults to (256,256).
+    """
+    masks =  glob.glob(f"{mask_path}/*.png")
+    for mask in masks:
+        im = Image.open(mask)
+        im.thumbnail(size, Image.ANTIALIAS)
+        im = im.convert('1')
+        im.save(f"{out_dir}/{os.path.basename(mask)}", format='PNG')
+
 if __name__ == "__main__":
-    generate_dataset()
+    #generate_dataset()
+    resize(IRREGULAR_MASKS, IRREGULAR_MASKS_OUT_DIR)
