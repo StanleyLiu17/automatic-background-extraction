@@ -5,6 +5,7 @@ from skimage import io
 from empatches import EMPatches
 from ast import literal_eval
 from natsort import natsorted
+from copy import copy
 
 emp = EMPatches()
 
@@ -69,20 +70,25 @@ def stitch_patches_dir(out_dir):
     """
     all_patch_paths = natsorted(os.path.join('./results_images', patch) for patch in os.listdir('./results_images'))
     
-    for i, patch_path in enumerate(all_patch_paths):
+    # Get number of images to recover from patches
+    with open('indices.txt') as f:
+        image_num = len(f.readlines())
+
+    for i in range(image_num):
         patch_counter = 0
         
-        while int(re.search(r'\d+', os.path.basename(patch_path)).group()) == i:
-            patch_counter += 1
+        for j, patch_path in enumerate(all_patch_paths): # Read through list of all patches
+            if int(re.search(r'\d+', os.path.basename(patch_path)).group()) == i:
+                patch_counter = copy(j) # If x = i where 'x_y_*.png', then it belongs to image being built in current iteration, record y num
+            else:
+                break
         
-        patch_paths = all_patch_paths[0:patch_counter + 1] # Get patch paths belonging to one image
-        all_patch_paths = all_patch_paths[patch_counter + 2:] # Remove patch paths from list
-
-        patches = [io.imread(patch) for patch in patch_paths]
+        curr_patches = all_patch_paths[:patch_counter + 1] # Get patch names using patch_counter
+        all_patch_paths = all_patch_paths[patch_counter + 2:] # Remove patch names from list of patches
+        patches = [io.imread(patch) for patch in curr_patches]
         
-        with open('indices.txt') as f:
+        with open('indices.txt') as f: # Get corresponding indices for patches
             indices = [literal_eval(f.readlines[i])]
-        
         image = Image.fromarray(emp.merge_patches(patches, indices))
         image.save(f"{out_dir}/result_{i}.png")
 
