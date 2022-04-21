@@ -43,18 +43,21 @@ def slice_img_dir(image_paths):
     Returns:
         Str: String representing relative path of directory where patches are saved
     """
+
     with open('indices.txt', 'a+') as f:
-        for i, image_path in enumerate(image_paths):
+        f.truncate(0)
+        for i, image_path in enumerate(natsorted(image_paths)):
             
-            image = io.imread(os.path.join('./Tests/', image_path))
+            image = io.imread(image_path)
+            
             patches, indices = emp.extract_patches(image, patchsize=256, overlap=0.2)
-            f.write(str(indices))
+            f.write(str(indices)+'\n')
             
             for j, patch in enumerate(patches):
                 im = Image.fromarray(patch)
                 im.save(f"./Patches/{i}_{j}_{os.path.basename(image_path)}")
-
-    return './Patches'
+    
+    return [os.path.join('./Patches', im) for im in os.listdir('./Patches')]
 
 def stitch_patches_dir(out_dir):
     """This function takes an output directory and stitches patches produced by inference. It 
@@ -64,9 +67,9 @@ def stitch_patches_dir(out_dir):
     Args:
         out_dir (Str): String representation of directory to save output to. This will be provided by argparse.
     """
-    all_patch_paths = natsorted(os.path.join('./Patches/results', patch) for patch in os.listdir('./Patches/results'))
+    all_patch_paths = natsorted(os.path.join('./results_images', patch) for patch in os.listdir('./results_images'))
     
-    for i, patch_path in enumerate(len(all_patch_paths)):
+    for i, patch_path in enumerate(all_patch_paths):
         patch_counter = 0
         
         while int(re.search(r'\d+', os.path.basename(patch_path)).group()) == i:
@@ -99,7 +102,8 @@ def trim(im):
     if bbox:
         return im.crop(bbox)
 
-#if __name__ == "__main__":
+if __name__ == "__main__":
     #slice_img_dir(os.listdir('./Tests/'))
     #slice_img('./Tests/P0114.png',0)
     #slice_img('top_mosaic_09cm_area5.png', 0)
+    stitch_patches_dir('./results')
