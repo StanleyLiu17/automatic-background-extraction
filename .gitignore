@@ -1,4 +1,6 @@
-checkpoints
+checkpoints/Inpainting Weights
+checkpoints/resultsfinal
+checkpoints/Semantic Segmentation Weights
 *.pyc
 Tests
 *.png
