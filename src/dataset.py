@@ -30,7 +30,7 @@ class Dataset(torch.utils.data.Dataset):
         self.segment_net = SegNet()
         self.device = config.SEG_DEVICE
         
-        self.segment_net.load_state_dict(torch.load('./checkpoints/segnet_final_reference.pth'))
+        self.segment_net.load_state_dict(torch.load('checkpoints/isaid_segnet_final'))
         self.segment_net.to(self.device)
         self.segment_net.eval()
         
@@ -146,9 +146,8 @@ class Dataset(torch.utils.data.Dataset):
                 if not os.path.exists('./Patches/'):
                     os.makedirs('./Patches/')
                     os.makedirs('./Patches/results')
-                    
-                flist = slice_img_dir(flist)
-                return flist
+
+                return slice_img_dir(flist)
 
             if os.path.isfile(flist):
                 try:
