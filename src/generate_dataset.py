@@ -7,7 +7,6 @@ from PIL import Image
 from empatches import EMPatches
 import glob
 from random import randrange
-import PIL.ImageOps
 import splitfolders
 
 Label = namedtuple('Label' , ['name', 'id', 'trainId', 'category', 'categoryId', 'hasInstances', 'ignoreInEval', 'color', 'm_color',])
