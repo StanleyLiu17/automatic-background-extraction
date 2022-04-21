@@ -29,6 +29,7 @@ labels = [
 ]
 palette = {label.id : label.color for label in labels}
 invert_palette = {v: k for k, v in palette.items()}
+emp = EMPatches()
 
 def decode_segmap(image):
                 
@@ -64,7 +65,6 @@ def augment_dataset(dataset_path, out_dir, overlap_per=0.4):
         dataset_path (str): file path to dataset to be augmented
     """
     images = glob.glob(f"{dataset_path}/*.png")
-    emp = EMPatches()
     
     for i, image_path in enumerate(images):        
         image = io.imread(image_path)
@@ -82,22 +82,31 @@ def rename(image_dir):
     """
     im_paths = glob.glob(f"{image_dir}/*.png")
     for im in im_paths:
-        os.rename(im, im.replace('cleanup',''))
+        os.rename(im, im.replace('_cleanup',''))
 
-def collect_images(dataset_path):
-    """Pulls images from iSAID corresponding to images produced by Cleanup.Pictures
+def generate_masks(inpainting_path, mask_dir, out_dir, overlap_per=0.4):
+    """Generates 256 x 256 masks for inpainting training
 
     Args:
-        dataset_path (str): file path to dataset
+        inpainting_path (str): path to folder containing inpainted dataset
+        mask_dir (str): path to folder containing semantic masks
+        out_dir (str): path to folder where masks should be saved
+        overlap_per (float, optional): Overlap percent for mask patches. Defaults to 0.4.
     """
+    semantic_masks = natsorted([os.path.join(mask_dir, os.path.basename(im)) for im in glob.glob(f"{inpainting_path}/*.png")])
 
-def generate_masks(dataset_path, out_dir, overlap_per=0.4):
-    """Generates masks for inpainting training
+    for i, mask in enumerate(semantic_masks):
+        binary_mask = np.asarray(Image.fromarray(decode_segmap(convert_from_color(np.asarray(Image.open(mask))))).convert('1'))
+        patches, _ = emp.extract_patches(binary_mask, patchsize=256, overlap=overlap_per)
+        for j, patch in enumerate(patches):
+            if np.mean(patch) == 0: # Skip all black masks
+                continue
+            im = Image.fromarray(patch)
+            im.save(f"{out_dir}/{i}_{j}_{os.path.basename(mask)}", format='PNG')
+
+def remove_vehicles(dataset, masks, out_dir):
+    """Uses ground truth semantic masks to generate images with white holes where vehicles had been
     """
-
-
-if __name__ == "__main__":
-    '''
     image_paths = natsorted(os.path.join('A:/Downloads/Datasets/iSAID/train/RGB Images', patch) for patch in os.listdir('A:/Downloads/Datasets/iSAID/train/RGB Images'))
     mask_paths = natsorted(os.path.join('A:/Downloads/Datasets/iSAID/train/Semantic_masks/images', patch) for patch in os.listdir('A:/Downloads/Datasets/iSAID/train/Semantic_masks/images'))
     
@@ -112,5 +121,12 @@ if __name__ == "__main__":
 
         im = Image.fromarray(new_img)
         im.save(f"A:/Downloads/Datasets/iSAID/train/Altered Images/{os.path.basename(image_paths[i])}")
-    '''
-    augment_dataset('A:/Downloads/Datasets/iSAID/train/Inpainting Dataset', 'A:/Downloads/Datasets/iSAID/train/Augmented Inpainting Dataset')
+
+if __name__ == "__main__":
+    INPAINTING_DATASET = 'A:/Downloads/Datasets/iSAID/train/Inpainting Dataset'
+    SEMANTIC_MASKS = 'A:/Downloads/Datasets/iSAID/train/Semantic_masks/images'
+    INPAINTING_OUT = 'A:/Downloads/Datasets/iSAID/train/Augmented Inpainting Dataset'
+    MASKS_OUT = 'A:/Downloads/Datasets/iSAID/train/Masks'
+    #augment_dataset(INPAINTING_DATASET, INPAINTING_OUT)
+    #rename(INPAINTING_DATASET)
+    generate_masks(INPAINTING_DATASET, SEMANTIC_MASKS, MASKS_OUT)
