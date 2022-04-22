@@ -38,8 +38,8 @@ class EdgeConnect():
         #self.results_path = os.path.join(config.PATH, 'results')
         self.results_path = './Patches/results'
 
-        if config.RESULTS is not None:
-            self.results_path = os.path.join(config.RESULTS)
+        #if config.RESULTS is not None:
+        #    self.results_path = os.path.join(config.RESULTS)
 
         if config.DEBUG is not None and config.DEBUG != 0:
             self.debug = True
