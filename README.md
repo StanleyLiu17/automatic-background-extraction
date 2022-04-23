@@ -1,4 +1,4 @@
-# automatic-background-extraction
+# Automatic-Background-Extraction
 
 Automatic Background Extraction combines semantic segmentation and inpainting models to remove vehicles from images taken from a satellite view. 
 
@@ -19,8 +19,12 @@ pip install -r requirements.txt
 
 Install pre-trained weights for SegNet based on the iSAID dataset and move them into the checkpoints folder: https://drive.google.com/drive/folders/168E5Sju0VEGEXIJkFlxHhWcIieEpeZFL?usp=sharing
 
+The iSAID dataset can be found here: https://captain-whu.github.io/iSAID/
+
 Install pre-trained weights for EdgeConnect based on the places2 dataset and move them into the checkpoints folder: https://drive.google.com/drive/folders/1KyXz4W4SAvfsGh3NJ7XgdOv5t46o-8aa
 (NOTE: This link will be replaced with custom trained weights when training is complete)
+
+We use the iSAID dataset and qd-imd irregular mask dataset. The latter can be found here: https://github.com/karfly/qd-imd
 
 ## Inference
 ```python test.py --input [PATH_TO_INPUT_DIR] --output [PATH_TO_OUTPUT_DIR]```
@@ -88,5 +92,17 @@ title = {DOTA: A Large-Scale Dataset for Object Detection in Aerial Images},
 booktitle = {The IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
 month = {June},
 year = {2018}
+
+@misc{https://doi.org/10.48550/arxiv.1511.00561,
+doi = {10.48550/ARXIV.1511.00561},
+url = {https://arxiv.org/abs/1511.00561},
+author = {Badrinarayanan, Vijay and Kendall, Alex and Cipolla, Roberto},
+keywords = {Computer Vision and Pattern Recognition (cs.CV), Machine Learning (cs.LG), Neural and Evolutionary Computing (cs.NE), FOS: Computer and information sciences, FOS: Computer and information sciences},
+title = {SegNet: A Deep Convolutional Encoder-Decoder Architecture for Image Segmentation},
+publisher = {arXiv},
+year = {2015},
+copyright = {arXiv.org perpetual, non-exclusive license}
+}
+
 }
 
