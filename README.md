@@ -53,6 +53,8 @@ This program is free software; you can redistribute it and/or modify it under th
 PLEASE ACKNOWLEDGE THE ORIGINAL AUTHORS AND PUBLICATION ACCORDING TO THE REPOSITORY github.com/nshaud/DeepNetsForEO OR IF NOT AVAILABLE: Nicolas Audebert, Bertrand Le Saux and Sébastien Lefèvre "Semantic Segmentation of Earth Observation Data Using Multimodal and Multi-scale Deep Networks", Asian Conference on Computer Vision, 2016.
 
 ## Citations
+
+```
 inproceedings{nazeri2019edgeconnect,
   title={EdgeConnect: Generative Image Inpainting with Adversarial Edge Learning},
   author={Nazeri, Kamyar and Ng, Eric and Joseph, Tony and Qureshi, Faisal and Ebrahimi, Mehran},
@@ -103,6 +105,6 @@ publisher = {arXiv},
 year = {2015},
 copyright = {arXiv.org perpetual, non-exclusive license}
 }
-
+```
 }
 
