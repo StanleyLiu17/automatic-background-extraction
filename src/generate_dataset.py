@@ -8,6 +8,7 @@ from empatches import EMPatches
 import glob
 from random import randrange
 import splitfolders
+import cv2
 
 Label = namedtuple('Label' , ['name', 'id', 'trainId', 'category', 'categoryId', 'hasInstances', 'ignoreInEval', 'color', 'm_color',])
 labels = [
@@ -193,6 +194,12 @@ def resize(mask_path, out_dir, size=(256,256)):
         im.thumbnail(size, Image.ANTIALIAS)
         im = im.convert('1')
         im.save(f"{out_dir}/{os.path.basename(mask)}", format='PNG')
+
+def conv_three_channel(dataset):
+    images =  glob.glob(f"{dataset}/*.png")
+    for image in images:
+        im = cv2.convert(cv2.imread(image), cv2.BGRA2BGR)
+        cv2.imwrite(image, im)
 
 def generate_splits(dataset_path, out_dir, p_seed, p_ratio):
     splitfolders.ratio(dataset_path, output=out_dir, seed=p_seed, ratio=p_ratio)
