@@ -7,7 +7,7 @@ import torch
 import argparse
 from src.config import Config
 from src.edge_connect import EdgeConnect
-from src.image_proc import stitch_patches_dir, cleanup
+from src.image_proc import stitch_patches_dir
 def main(mode=None):
     r"""starts the model"""
     config = load_config(mode)
@@ -45,9 +45,8 @@ def main(mode=None):
 
     if not os.path.exists(results_path):
         os.makedirs(results_path)
-        
+
     stitch_patches_dir(results_path)
-    cleanup()
     
 def load_config(mode=None):
     r"""loads model config
