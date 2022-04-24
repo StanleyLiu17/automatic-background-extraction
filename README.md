@@ -21,12 +21,8 @@ pip install -r requirements.txt
 
 Install pre-trained weights for SegNet based on the iSAID dataset and move them into the checkpoints folder: https://drive.google.com/drive/folders/168E5Sju0VEGEXIJkFlxHhWcIieEpeZFL?usp=sharing
 
-The iSAID dataset can be found here: https://captain-whu.github.io/iSAID/
-
 Install pre-trained weights for EdgeConnect based on the places2 dataset and move them into the checkpoints folder: https://drive.google.com/drive/folders/1KyXz4W4SAvfsGh3NJ7XgdOv5t46o-8aa
 (NOTE: This link will be replaced with custom trained weights when training is complete)
-
-We use the iSAID dataset and qd-imd irregular mask dataset. The latter can be found here: https://github.com/karfly/qd-imd
 
 ## Inference
 ```python test.py --input [PATH_TO_INPUT_DIR] --output [PATH_TO_OUTPUT_DIR]```
@@ -37,6 +33,9 @@ Note: The inpainting model, EdgeConnect, will output 256 x 256 images by default
 ## Training
 For training EdgeConnect, please refer to the repo here: https://github.com/knazeri/edge-connect
 For training SegNet, please refer to the repo here: https://github.com/nshaud/DeepNetsForEO, or use the provided ```train_segnet.ipynb``` notebook adapted from the aforementioned listed repo for the express purpose of training SegNet.
+
+SegNet was trained on the iSAID dataset (https://captain-whu.github.io/iSAID/)
+EdgeConnect is being trained on the iSAID dataset, and the QD-IMD Irregular Mask dataset, the latter of which is found here (https://github.com/karfly/qd-imd)
 
 ## To-Dos
 * Explore more intelligent creation of binary masks to cover shadows produced by vehicles
@@ -99,21 +98,29 @@ pages={28--37},
 year={2019}
 }
 
+@InProceedings{Xia_2018_CVPR,
+author = {Xia, Gui-Song and Bai, Xiang and Ding, Jian and Zhu, Zhen and Belongie, Serge and Luo, Jiebo and Datcu, Mihai and Pelillo, Marcello and Zhang, Liangpei},
+title = {DOTA: A Large-Scale Dataset for Object Detection in Aerial Images},
+booktitle = {The IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+month = {June},
+year = {2018}
+}
+
 @article{DBLP:journals/corr/BadrinarayananK15,
-  author    = {Vijay Badrinarayanan and
+author    = {Vijay Badrinarayanan and
                Alex Kendall and
                Roberto Cipolla},
-  title     = {SegNet: {A} Deep Convolutional Encoder-Decoder Architecture for Image
+title     = {SegNet: {A} Deep Convolutional Encoder-Decoder Architecture for Image
                Segmentation},
-  journal   = {CoRR},
-  volume    = {abs/1511.00561},
-  year      = {2015},
-  url       = {http://arxiv.org/abs/1511.00561},
-  eprinttype = {arXiv},
-  eprint    = {1511.00561},
-  timestamp = {Mon, 13 Aug 2018 16:46:06 +0200},
-  biburl    = {https://dblp.org/rec/journals/corr/BadrinarayananK15.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
+journal   = {CoRR},
+volume    = {abs/1511.00561},
+year      = {2015},
+url       = {http://arxiv.org/abs/1511.00561},
+eprinttype = {arXiv},
+eprint    = {1511.00561},
+timestamp = {Mon, 13 Aug 2018 16:46:06 +0200},
+biburl    = {https://dblp.org/rec/journals/corr/BadrinarayananK15.bib},
+bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 ```
 }
