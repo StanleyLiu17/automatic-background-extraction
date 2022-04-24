@@ -6,6 +6,8 @@ Automatic Background Extraction combines semantic segmentation and inpainting mo
 2. Identified vehicles are replaced with white pixels and a corresponding binary white-on-black mask is generated
 3. The altered image and mask is passed to an inpainting model to fill in the degradation generated in the previous step
 
+The SegNet model (https://arxiv.org/abs/1511.00561) has been combined with EdgeConnect (https://github.com/knazeri/edge-connect) to produce this project. NVIDIA CUDA / cuDNN, and CPU are supported.
+
 ## Requirements
 * Python 3.8
 * PyTorch 1.10.x
@@ -38,9 +40,10 @@ For training SegNet, please refer to the repo here: https://github.com/nshaud/De
 
 ## TODOS
 * Optimize SegNet training
-* Complete inpainting dataset by manually inpainting over the rest of iSAID, and build validation / testing datasets
+* Complete inpainting dataset by manually inpainting and augmentation of the rest of the iSAID training, validation, and testing datasets
 * Complete EdgeConnect training and optimize parameters
 * Optimize as needed based on the collected datasets of areas of interest
+* Various minor optimizations
 
 ## EdgeConnect License
 Licensed under a [Creative Commons Attribution-NonCommercial 4.0 International.](https://creativecommons.org/licenses/by-nc/4.0/)
@@ -113,4 +116,3 @@ copyright = {arXiv.org perpetual, non-exclusive license}
 }
 ```
 }
-
