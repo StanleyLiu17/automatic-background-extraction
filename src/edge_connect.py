@@ -107,6 +107,7 @@ class EdgeConnect():
 
             output = self.postprocess(outputs_merged)[0]            
             path = os.path.join(self.results_path, name) 
+            print(index, name)
             try:
                 imsave(output, path)
             except ValueError:
