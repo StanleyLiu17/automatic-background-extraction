@@ -39,6 +39,7 @@ For training EdgeConnect, please refer to the repo here: https://github.com/knaz
 For training SegNet, please refer to the repo here: https://github.com/nshaud/DeepNetsForEO, or use the provided ```train_segnet.ipynb``` notebook adapted from the aforementioned listed repo for the express purpose of training SegNet.
 
 ## To-Dos
+* Explore more intelligent creation of binary masks to cover shadows produced by vehicles
 * Optimize SegNet training
 * Complete inpainting dataset by manually inpainting and augmentation of the rest of the iSAID training, validation, and testing datasets
 * Complete EdgeConnect training and optimize parameters
