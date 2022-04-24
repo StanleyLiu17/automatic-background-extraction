@@ -88,7 +88,7 @@ def stitch_patches_dir(out_dir):
         patches = [io.imread(patch) for patch in curr_patches]
         
         with open('indices.txt') as f: # Get corresponding indices for patches
-            indices = [literal_eval(f.readlines[i])]
+            indices = [literal_eval(f.readlines())]
         image = Image.fromarray(emp.merge_patches(patches, indices))
         image.save(f"{out_dir}/result_{i}.png")
 
@@ -109,7 +109,4 @@ def trim(im):
         return im.crop(bbox)
 
 if __name__ == "__main__":
-    #slice_img_dir(os.listdir('./Tests/'))
-    #slice_img('./Tests/P0114.png',0)
-    #slice_img('top_mosaic_09cm_area5.png', 0)
     stitch_patches_dir('./results')
