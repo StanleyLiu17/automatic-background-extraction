@@ -1,8 +1,6 @@
-checkpoints/Inpainting Weights
-checkpoints/resultsfinal
-checkpoints/Semantic Segmentation Weights
 __pycache__
 Patches
+checkpoints
 results
 results_images
 *.pyc
