@@ -39,9 +39,13 @@ def main(mode=None):
     print('\nstart testing...\n')
     model.test()
 
-    results_path = os.path.join(config.PATH, 'results')
+    results_path = os.path.join(config.PATH, 'results') # Default path
     if config.RESULTS is not None:
-        results_path = os.path.join(config.RESULTS)
+        results_path = os.path.join(config.RESULTS) # Use path if specified
+
+    if not os.path.exists(results_path):
+        os.makedirs(results_path)
+        
     stitch_patches_dir(results_path)
     cleanup()
     
