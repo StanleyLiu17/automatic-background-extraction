@@ -22,7 +22,7 @@ pip install -r requirements.txt
 Install pre-trained weights for SegNet based on the iSAID dataset and move them into the checkpoints folder: https://drive.google.com/drive/folders/168E5Sju0VEGEXIJkFlxHhWcIieEpeZFL?usp=sharing
 
 Install pre-trained weights for EdgeConnect based on the places2 dataset and move them into the checkpoints folder: https://drive.google.com/drive/folders/1KyXz4W4SAvfsGh3NJ7XgdOv5t46o-8aa
-(NOTE: This link will be replaced with custom trained weights when training is complete)
+(NOTE: This link will be replaced with custom trained weights when training is complete. These weights belong to the authors of EdgeConnect: Generative Image Inpainting with Adversarial Edge Learning, see the citations below)
 
 ## Inference
 ```python test.py --input [PATH_TO_INPUT_DIR] --output [PATH_TO_OUTPUT_DIR]```
