@@ -97,22 +97,21 @@ pages={28--37},
 year={2019}
 }
 
-@InProceedings{Xia_2018_CVPR,
-author = {Xia, Gui-Song and Bai, Xiang and Ding, Jian and Zhu, Zhen and Belongie, Serge and Luo, Jiebo and Datcu, Mihai and Pelillo, Marcello and Zhang, Liangpei},
-title = {DOTA: A Large-Scale Dataset for Object Detection in Aerial Images},
-booktitle = {The IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
-month = {June},
-year = {2018}
-
-@misc{https://doi.org/10.48550/arxiv.1511.00561,
-doi = {10.48550/ARXIV.1511.00561},
-url = {https://arxiv.org/abs/1511.00561},
-author = {Badrinarayanan, Vijay and Kendall, Alex and Cipolla, Roberto},
-keywords = {Computer Vision and Pattern Recognition (cs.CV), Machine Learning (cs.LG), Neural and Evolutionary Computing (cs.NE), FOS: Computer and information sciences, FOS: Computer and information sciences},
-title = {SegNet: A Deep Convolutional Encoder-Decoder Architecture for Image Segmentation},
-publisher = {arXiv},
-year = {2015},
-copyright = {arXiv.org perpetual, non-exclusive license}
+@article{DBLP:journals/corr/BadrinarayananK15,
+  author    = {Vijay Badrinarayanan and
+               Alex Kendall and
+               Roberto Cipolla},
+  title     = {SegNet: {A} Deep Convolutional Encoder-Decoder Architecture for Image
+               Segmentation},
+  journal   = {CoRR},
+  volume    = {abs/1511.00561},
+  year      = {2015},
+  url       = {http://arxiv.org/abs/1511.00561},
+  eprinttype = {arXiv},
+  eprint    = {1511.00561},
+  timestamp = {Mon, 13 Aug 2018 16:46:06 +0200},
+  biburl    = {https://dblp.org/rec/journals/corr/BadrinarayananK15.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 ```
 }
