@@ -35,11 +35,7 @@ class EdgeConnect():
         self.test_dataset = Dataset(config, config.TEST_FLIST, config.TEST_EDGE_FLIST, augment=False, training=False)
 
         self.samples_path = os.path.join(config.PATH, 'samples')
-        #self.results_path = os.path.join(config.PATH, 'results')
         self.results_path = './Patches/results'
-
-        #if config.RESULTS is not None:
-        #    self.results_path = os.path.join(config.RESULTS)
 
         if config.DEBUG is not None and config.DEBUG != 0:
             self.debug = True
@@ -108,6 +104,7 @@ class EdgeConnect():
 
             output = self.postprocess(outputs_merged)[0]            
             path = os.path.join(self.results_path, name)
+            print(path)
             print(index, name)
 
             imsave(output, path)

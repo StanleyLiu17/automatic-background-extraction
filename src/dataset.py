@@ -30,7 +30,7 @@ class Dataset(torch.utils.data.Dataset):
         self.segment_net = SegNet()
         self.device = config.SEG_DEVICE
         
-        self.segment_net.load_state_dict(torch.load('checkpoints/isaid_segnet_final'))
+        self.segment_net.load_state_dict(torch.load('checkpoints/Semantic Segmentation Weights/isaid_segnet_final'))
         self.segment_net.to(self.device)
         self.segment_net.eval()
         
