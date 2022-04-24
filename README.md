@@ -22,6 +22,7 @@ pip install -r requirements.txt
 Install pre-trained weights for SegNet based on the iSAID dataset and move them into the checkpoints folder: https://drive.google.com/drive/folders/168E5Sju0VEGEXIJkFlxHhWcIieEpeZFL?usp=sharing
 
 Install pre-trained weights for EdgeConnect based on the places2 dataset and move them into the checkpoints folder: https://drive.google.com/drive/folders/1KyXz4W4SAvfsGh3NJ7XgdOv5t46o-8aa
+
 (NOTE: This link will be replaced with custom trained weights when training is complete. These weights belong to the authors of EdgeConnect: Generative Image Inpainting with Adversarial Edge Learning, see the citations below)
 
 ## Inference
@@ -35,6 +36,7 @@ For training EdgeConnect, please refer to the repo here: https://github.com/knaz
 For training SegNet, please refer to the repo here: https://github.com/nshaud/DeepNetsForEO, or use the provided ```train_segnet.ipynb``` notebook adapted from the aforementioned listed repo for the express purpose of training SegNet.
 
 SegNet was trained on the iSAID dataset (https://captain-whu.github.io/iSAID/)
+
 EdgeConnect is being trained on the iSAID dataset, and the QD-IMD Irregular Mask dataset, the latter of which is found here (https://github.com/karfly/qd-imd)
 
 ## To-Dos
