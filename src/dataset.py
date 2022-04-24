@@ -38,6 +38,8 @@ class Dataset(torch.utils.data.Dataset):
         return len(self.data)
 
     def __getitem__(self, index):
+        if self.load_name(index) == 'results':
+            return self.load_item(0)
         try:
             item = self.load_item(index)
         except:
