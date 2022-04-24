@@ -6,6 +6,8 @@ Automatic Background Extraction combines semantic segmentation and inpainting mo
 2. Identified vehicles are replaced with white pixels and a corresponding binary white-on-black mask is generated
 3. The altered image and mask is passed to an inpainting model to fill in the degradation generated in the previous step
 
+The SegNet model (https://arxiv.org/abs/1511.00561) has been combined with EdgeConnect (https://github.com/knazeri/edge-connect) to produce this project. NVIDIA CUDA / cuDNN, and CPU are supported.
+
 ## Requirements
 * Python 3.8
 * PyTorch 1.10.x
@@ -36,11 +38,14 @@ Note: The inpainting model, EdgeConnect, will output 256 x 256 images by default
 For training EdgeConnect, please refer to the repo here: https://github.com/knazeri/edge-connect
 For training SegNet, please refer to the repo here: https://github.com/nshaud/DeepNetsForEO, or use the provided ```train_segnet.ipynb``` notebook adapted from the aforementioned listed repo for the express purpose of training SegNet.
 
-## TODOS
+## To-Dos
+* Explore more intelligent creation of binary masks to cover shadows produced by vehicles
 * Optimize SegNet training
-* Complete inpainting dataset by manually inpainting over the rest of iSAID, and build validation / testing datasets
+* Complete inpainting dataset by manually inpainting and augmentation of the rest of the iSAID training, validation, and testing datasets
 * Complete EdgeConnect training and optimize parameters
 * Optimize as needed based on the collected datasets of areas of interest
+* Annotate ```train_segnet.ipynb``` to include instructions for training with different datasets
+* Various minor optimizations for image processing
 
 ## EdgeConnect License
 Licensed under a [Creative Commons Attribution-NonCommercial 4.0 International.](https://creativecommons.org/licenses/by-nc/4.0/)
@@ -94,23 +99,21 @@ pages={28--37},
 year={2019}
 }
 
-@InProceedings{Xia_2018_CVPR,
-author = {Xia, Gui-Song and Bai, Xiang and Ding, Jian and Zhu, Zhen and Belongie, Serge and Luo, Jiebo and Datcu, Mihai and Pelillo, Marcello and Zhang, Liangpei},
-title = {DOTA: A Large-Scale Dataset for Object Detection in Aerial Images},
-booktitle = {The IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
-month = {June},
-year = {2018}
-
-@misc{https://doi.org/10.48550/arxiv.1511.00561,
-doi = {10.48550/ARXIV.1511.00561},
-url = {https://arxiv.org/abs/1511.00561},
-author = {Badrinarayanan, Vijay and Kendall, Alex and Cipolla, Roberto},
-keywords = {Computer Vision and Pattern Recognition (cs.CV), Machine Learning (cs.LG), Neural and Evolutionary Computing (cs.NE), FOS: Computer and information sciences, FOS: Computer and information sciences},
-title = {SegNet: A Deep Convolutional Encoder-Decoder Architecture for Image Segmentation},
-publisher = {arXiv},
-year = {2015},
-copyright = {arXiv.org perpetual, non-exclusive license}
+@article{DBLP:journals/corr/BadrinarayananK15,
+  author    = {Vijay Badrinarayanan and
+               Alex Kendall and
+               Roberto Cipolla},
+  title     = {SegNet: {A} Deep Convolutional Encoder-Decoder Architecture for Image
+               Segmentation},
+  journal   = {CoRR},
+  volume    = {abs/1511.00561},
+  year      = {2015},
+  url       = {http://arxiv.org/abs/1511.00561},
+  eprinttype = {arXiv},
+  eprint    = {1511.00561},
+  timestamp = {Mon, 13 Aug 2018 16:46:06 +0200},
+  biburl    = {https://dblp.org/rec/journals/corr/BadrinarayananK15.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 ```
 }
-
