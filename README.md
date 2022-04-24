@@ -43,7 +43,8 @@ For training SegNet, please refer to the repo here: https://github.com/nshaud/De
 * Complete inpainting dataset by manually inpainting and augmentation of the rest of the iSAID training, validation, and testing datasets
 * Complete EdgeConnect training and optimize parameters
 * Optimize as needed based on the collected datasets of areas of interest
-* Various minor optimizations
+* Annotate ```train_segnet.ipynb``` to include instructions for training with different datasets
+* Various minor optimizations for image processing
 
 ## EdgeConnect License
 Licensed under a [Creative Commons Attribution-NonCommercial 4.0 International.](https://creativecommons.org/licenses/by-nc/4.0/)
