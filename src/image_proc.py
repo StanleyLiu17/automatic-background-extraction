@@ -6,6 +6,7 @@ from empatches import EMPatches
 from ast import literal_eval
 from natsort import natsorted
 from copy import copy
+import pickle
 
 emp = EMPatches()
 
@@ -68,30 +69,30 @@ def stitch_patches_dir(out_dir):
     Args:
         out_dir (Str): String representation of directory to save output to. This will be provided by argparse.
     """
-    all_patch_paths = natsorted(os.path.join('./results_images', patch) for patch in os.listdir('./results_images'))
+    all_patch_paths = natsorted(os.path.join('./Patches/results', patch) for patch in os.listdir('./Patches/results'))
     
     # Get number of images to recover from patches
     with open('indices.txt') as f:
-        image_num = len(f.readlines())
-
-    for i in range(image_num):
-        patch_counter = 0
-        
-        for j, patch_path in enumerate(all_patch_paths): # Read through list of all patches
-            if int(re.search(r'\d+', os.path.basename(patch_path)).group()) == i:
-                patch_counter = copy(j) # If x = i where 'x_y_*.png', then it belongs to image being built in current iteration, record y num
-            else:
+        image_num = len([line for line in f.readlines() if line.strip()])
+    
+    with open('indices.txt') as f:
+        for i in range(0, image_num):
+            patch_counter, curr_patches = 0, []
+            
+            for j, patch_path in enumerate(all_patch_paths): # Read through list of all patches
+                if int(re.search(r'\d+', os.path.basename(patch_path)).group()) == i:
+                    patch_counter = copy(j) # If x = i where 'x_y_*.png', then it belongs to image being built in current iteration, record y num
+                    continue
                 break
+            
+            curr_patches = all_patch_paths[:patch_counter + 1] # Get patch names using patch_counter
+            all_patch_paths = all_patch_paths[patch_counter + 1:] # Remove patch names from list of patches
+            patches = [io.imread(patch) for patch in curr_patches]
+            
+            indices = literal_eval(f.readline())
+            image = Image.fromarray(emp.merge_patches(patches, indices))
+            image.save(f"{out_dir}/result_{i}.png")
         
-        curr_patches = all_patch_paths[:patch_counter + 1] # Get patch names using patch_counter
-        all_patch_paths = all_patch_paths[patch_counter + 2:] # Remove patch names from list of patches
-        patches = [io.imread(patch) for patch in curr_patches]
-        
-        with open('indices.txt') as f: # Get corresponding indices for patches
-            indices = [literal_eval(f.readlines()[i])]
-        image = Image.fromarray(emp.merge_patches(patches, indices))
-        image.save(f"{out_dir}/result_{i}.png")
-
 def cleanup():
     """Cleans up folders and files used to pre/post-process images
     """
