@@ -33,9 +33,12 @@ class EdgeConnect():
 
         # test mode
         self.test_dataset = Dataset(config, config.TEST_FLIST, config.TEST_EDGE_FLIST, augment=False, training=False)
-
+        
+        self.results_path = os.path.join(config.PATH, 'results')
         self.samples_path = os.path.join(config.PATH, 'samples')
-        self.results_path = './Patches/results'
+        
+        if config.RESULTS is not None:
+            self.results_path = 'Patches/results'
 
         if config.DEBUG is not None and config.DEBUG != 0:
             self.debug = True
@@ -79,7 +82,7 @@ class EdgeConnect():
         index = 0
         for items in test_loader:
             name = self.test_dataset.load_name(index)
-        
+            
             images, images_gray, edges, masks = self.cuda(*items)
             index += 1
 
@@ -103,11 +106,11 @@ class EdgeConnect():
                 outputs_merged = (outputs * masks) + (images * (1 - masks))
 
             output = self.postprocess(outputs_merged)[0]            
-            path = os.path.join(self.results_path, name)
-            print(path)
-            print(index, name)
-
-            imsave(output, path)
+            path = os.path.join(self.results_path, name) 
+            try:
+                imsave(output, path)
+            except ValueError:
+                continue
 
             if self.debug:
                 edges = self.postprocess(1 - edges)[0]
