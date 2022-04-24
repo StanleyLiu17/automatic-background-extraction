@@ -72,12 +72,12 @@ def stitch_patches_dir(out_dir):
     all_patch_paths = natsorted(os.path.join('./Patches/results', patch) for patch in os.listdir('./Patches/results'))
     
     # Get number of images to recover from patches
-    with open('indices.txt') as f:
+    with open('indices.txt', 'r') as f:
         image_num = len([line for line in f.readlines() if line.strip()])
     
-    with open('indices.txt') as f:
-        for i in range(0, image_num):
-            patch_counter, curr_patches = 0, []
+    with open('indices.txt', 'r') as f:
+        for i in range(image_num):
+            patch_counter = 0
             
             for j, patch_path in enumerate(all_patch_paths): # Read through list of all patches
                 if int(re.search(r'\d+', os.path.basename(patch_path)).group()) == i:
@@ -85,13 +85,14 @@ def stitch_patches_dir(out_dir):
                     continue
                 break
             
-            curr_patches = all_patch_paths[:patch_counter + 1] # Get patch names using patch_counter
-            all_patch_paths = all_patch_paths[patch_counter + 1:] # Remove patch names from list of patches
-            patches = [io.imread(patch) for patch in curr_patches]
-            
+            patches = [io.imread(patch) for patch in all_patch_paths[:patch_counter + 1]] # Get patch names using patch_counter
             indices = literal_eval(f.readline())
+            file_base_name = re.sub(r'\d+_\d+_', '', os.path.basename(all_patch_paths[0])) # Get original file name
+
+            all_patch_paths = all_patch_paths[patch_counter + 1:] # Remove patch names from list of patches
+            
             image = Image.fromarray(emp.merge_patches(patches, indices))
-            image.save(f"{out_dir}/result_{i}.png")
+            image.save(f"{out_dir}/{file_base_name}")
     
     cleanup()
         
