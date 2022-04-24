@@ -6,7 +6,7 @@ from empatches import EMPatches
 from ast import literal_eval
 from natsort import natsorted
 from copy import copy
-import pickle
+import shutil
 
 emp = EMPatches()
 
@@ -92,6 +92,8 @@ def stitch_patches_dir(out_dir):
             indices = literal_eval(f.readline())
             image = Image.fromarray(emp.merge_patches(patches, indices))
             image.save(f"{out_dir}/result_{i}.png")
+    
+    cleanup()
         
 def cleanup():
     """Cleans up folders and files used to pre/post-process images
@@ -99,7 +101,7 @@ def cleanup():
     if os.path.exists('indices.txt'):
         os.remove('indices.txt')
     if os.path.exists('./Patches'):
-        os.rmdir('./Patches')
+        shutil.rmtree('./Patches')
 
 def trim(im):
     bg = Image.new(im.mode, im.size, im.getpixel((0,0)))
