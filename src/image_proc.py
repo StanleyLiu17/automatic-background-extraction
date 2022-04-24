@@ -88,7 +88,7 @@ def stitch_patches_dir(out_dir):
         patches = [io.imread(patch) for patch in curr_patches]
         
         with open('indices.txt') as f: # Get corresponding indices for patches
-            indices = [literal_eval(f.readlines())]
+            indices = [literal_eval(f.readlines()[i])]
         image = Image.fromarray(emp.merge_patches(patches, indices))
         image.save(f"{out_dir}/result_{i}.png")
 
