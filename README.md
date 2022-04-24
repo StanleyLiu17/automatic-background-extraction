@@ -38,7 +38,7 @@ Note: The inpainting model, EdgeConnect, will output 256 x 256 images by default
 For training EdgeConnect, please refer to the repo here: https://github.com/knazeri/edge-connect
 For training SegNet, please refer to the repo here: https://github.com/nshaud/DeepNetsForEO, or use the provided ```train_segnet.ipynb``` notebook adapted from the aforementioned listed repo for the express purpose of training SegNet.
 
-## TODOS
+## To-Dos
 * Optimize SegNet training
 * Complete inpainting dataset by manually inpainting and augmentation of the rest of the iSAID training, validation, and testing datasets
 * Complete EdgeConnect training and optimize parameters
