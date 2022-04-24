@@ -8,7 +8,7 @@ Automatic Background Extraction combines semantic segmentation and inpainting mo
 
 ## Requirements
 * Python 3.8
-* PyTorch 1.0.x
+* PyTorch 1.10.x
 
 ## Installation
 ```
@@ -34,7 +34,7 @@ Note: The inpainting model, EdgeConnect, will output 256 x 256 images by default
 
 ## Training
 For training EdgeConnect, please refer to the repo here: https://github.com/knazeri/edge-connect
-For training SegNet, please refer to the repo here: https://github.com/nshaud/DeepNetsForEO
+For training SegNet, please refer to the repo here: https://github.com/nshaud/DeepNetsForEO, or use the provided ```train_segnet.ipynb``` notebook adapted from the aforementioned listed repo for the express purpose of training SegNet.
 
 ## EdgeConnect License
 Licensed under a [Creative Commons Attribution-NonCommercial 4.0 International.](https://creativecommons.org/licenses/by-nc/4.0/)
