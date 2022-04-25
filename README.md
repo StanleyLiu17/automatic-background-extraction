@@ -31,6 +31,10 @@ The GPU is used by default! If you want to use CPU add the ```--cpu``` flag to t
 
 Note: The inpainting model, EdgeConnect, will output 256 x 256 images by default. This project implements automatic image slicing and stitching, so result images are always in the same resolution as input images, though it uses more memory at runtime.
 
+Before                     |  After
+:-------------------------:|:-------------------------:
+<img src ="https://github.com/StanleyLiu17/automatic-background-extraction/blob/main/Sample_tests/P0118.png" width="70%"></img> | <img src ="https://github.com/StanleyLiu17/automatic-background-extraction/blob/main/Sample_results/P0118.png" width="70%"></img>
+
 ## Training
 For training EdgeConnect, please refer to the repo here: https://github.com/knazeri/edge-connect
 For training SegNet, please refer to the repo here: https://github.com/nshaud/DeepNetsForEO, or use the provided ```train_segnet.ipynb``` notebook adapted from the aforementioned listed repo for the express purpose of training SegNet.
